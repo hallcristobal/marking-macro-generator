@@ -41,7 +41,7 @@ function generateMacro(targets, markers) {
     return ret;
 }
 
-const STORAGE_KEY = "GENERATE_MARK_KEY";
+const STORAGE_KEY = "GENERATE_MARK_KEY_NEW";
 
 const TARGET_MAP = {
     player1: "1",
