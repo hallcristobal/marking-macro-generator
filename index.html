@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marking Generator</title>
+    <script src="./dist/vendor.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            text-align: left;
+        }
+
+        .outer-group {
+            border-right: 1px solid rgba(94, 94, 94, 0.433);
+        }
+
+        .output-area,
+        .outer-group,
+        .button-wrap {
+            float: left;
+            padding: 0 10px;
+            margin-right: 3px;
+        }
+
+        .content {
+            margin: 0 auto;
+        }
+
+        .input-group>input[type=checkbox] {
+            margin-right: 0.5em;
+        }
+
+
+        .flex-break,
+        .header {
+            clear: both;
+            display: flex;
+            margin: 1rem 0;
+        }
+
+        @media (min-width: 576px) {
+            body>.content {
+                max-width: 540px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            body>.content {
+                max-width: 720px;
+            }
+
+            .flex-break {
+                display: none;
+            }
+        }
+
+        @media (min-width: 992px) {
+            body>.content {
+                max-width: 960px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            body>.content {
+                max-width: 1140px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content" id="root"></div>
+    <script src="./dist/main.js"></script>
+</body>
+
+</html>
