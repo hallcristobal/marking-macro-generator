@@ -57,172 +57,170 @@ const TARGET_MAP = {
     target: "t",
 }
 
-class Generator extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            inputs: {
-                marks: {
-                    attack1: false,
-                    attack2: false,
-                    attack3: false,
-                    attack4: false,
-                    attack5: false,
-                    attack6: false,
-                    attack7: false,
-                    attack8: false,
-                    bind1: false,
-                    bind2: false,
-                    bind3: false,
-                    ignore1: false,
-                    ignore2: false,
-                    square: false,
-                    circle: false,
-                    cross: false,
-                    triangle: false,
-                },
-                targets: {
-                    player1: false,
-                    player2: false,
-                    player3: false,
-                    player4: false,
-                    player5: false,
-                    player6: false,
-                    player7: false,
-                    player8: false,
-                    pet: false,
-                    focusTarget: false,
-                    target: false,
-                }
-            }
-        };
-        this.textAreaRef = React.createRef();
-    }
+const CheckboxWrap = ({ checked, onChange, id, children }) => (
+    <div className="input-group">
+        <input id={id} type="checkbox" checked={checked} onChange={(e) => onChange(e)} />
+        <label htmlFor={id}>{inferLabel(children)}</label>
+    </div>
+);
 
-    componentDidMount() {
-        this.loadSelections();
-    }
 
-    loadSelections() {
+const gen = () => {
+    const [marks, setMarks] = React.useState({
+        attack1: false,
+        attack2: false,
+        attack3: false,
+        attack4: false,
+        attack5: false,
+        attack6: false,
+        attack7: false,
+        attack8: false,
+        bind1: false,
+        bind2: false,
+        bind3: false,
+        ignore1: false,
+        ignore2: false,
+        square: false,
+        circle: false,
+        cross: false,
+        triangle: false,
+    });
+
+    const [targets, setTargets] = React.useState({
+        player1: false,
+        player2: false,
+        player3: false,
+        player4: false,
+        player5: false,
+        player6: false,
+        player7: false,
+        player8: false,
+        pet: false,
+        focusTarget: false,
+        target: false,
+    });
+
+    const [output, setOutput] = React.useState('');
+
+    const loadSelections = () => {
         if (!window.Storage)
             return;
         const savedState = window.localStorage.getItem(STORAGE_KEY);
         if (!savedState)
             return;
         const saved = JSON.parse(savedState);
-        this.setState(prev => {
-            const state = prev;
-            state.inputs.marks = {
-                ...state.inputs.marks,
-                ...saved.marks,
-            };
-            state.inputs.targets = {
-                ...state.inputs.targets,
-                ...saved.targets
-            }
-            return state;
+        setMarks({
+            ...marks,
+            ...saved.marks,
+        });
+        setTargets({
+            ...targets,
+            ...saved.targets
         });
     }
 
-    saveSelections() {
+    const saveSelections = () => {
         if (!window.Storage)
             return;
         const toSave = {
             marks: {},
             targets: {},
         };
-        Object.keys(this.state.inputs.marks).forEach(key => this.state.inputs.marks[key] && (toSave.marks[key] = true));
-        Object.keys(this.state.inputs.targets).forEach(key => this.state.inputs.targets[key] && (toSave.targets[key] = true));
+        Object.keys(marks).forEach(key => marks[key] && (toSave.marks[key] = true));
+        Object.keys(targets).forEach(key => targets[key] && (toSave.targets[key] = true));
         window.localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
     }
 
-    setChanged(evt, category, key) {
-        this.setState((prev) => {
-            const state = prev;
-            state.inputs[category][key] = evt.target.checked;
-            return state;
-        }, this.saveSelections);
-    }
+    React.useEffect(() => {
+        loadSelections();
+    }, []);
 
-    generate(evt) {
-        evt.preventDefault();
+    React.useEffect(() => {
+        saveSelections();
+    }, [marks, targets])
+
+    const generate = (e) => {
+        e.preventDefault();
         const markers = [];
-        const targets = [];
+        const $targets = [];
 
-        Object.keys(this.state.inputs.marks).map(key => {
-            this.state.inputs.marks[key] && markers.push(key);
+        Object.keys(marks).map(key => {
+            marks[key] && markers.push(key);
         });
-        Object.keys(this.state.inputs.targets).map(key => {
-            this.state.inputs.targets[key] && targets.push(TARGET_MAP[key]);
+        Object.keys(targets).map(key => {
+            targets[key] && $targets.push(TARGET_MAP[key]);
         });
 
-        const output = generateMacro(targets, markers);
-        if (this.textAreaRef.current)
-            this.textAreaRef.current.value = output;
+        const gend = generateMacro($targets, markers);
+        setOutput(gend);
+    }
+    
+    const setChanged = (evt, category, key) => {
+        const tmp = {};
+        tmp[key] = evt.target.checked;
+
+        if (category === "marks") {
+            setMarks({ ...marks, ...tmp });
+        } else if (category === "targets") {
+            setTargets({ ...targets, ...tmp });
+        }
     }
 
-    render() {
-        const CheckboxWrap = ({ checked, onChange, id, children }) => (
-            <div className="input-group">
-                <input id={id} type="checkbox" checked={checked} onChange={(e) => onChange(e)} />
-                <label htmlFor={id}>{inferLabel(children)}</label>
-            </div>
-        );
-
-        const marks = Object.keys(this.state.inputs.marks).map(key => {
-            return (
-                <CheckboxWrap
-                    key={`marks_${key}`}
-                    id={`marks_${key}`}
-                    checked={this.state.inputs.marks[key] === true}
-                    onChange={(e) => this.setChanged(e, "marks", key)}>
-                    {key}
-                </CheckboxWrap>
-            )
-        });
-        const targets = Object.keys(this.state.inputs.targets).map(key => {
-            return (
-                <CheckboxWrap
-                    key={`targets_${key}`}
-                    id={`targets_${key}`}
-                    checked={this.state.inputs.targets[key] === true}
-                    onChange={(e) => this.setChanged(e, "targets", key)}>
-                    {key}
-                </CheckboxWrap>
-            )
-        });
-
+    const markViews = Object.keys(marks).map(key => {
         return (
-            <>
-                <div className="header">
-                    <h1>Marking Macro Generator</h1>
-                </div>
-                <div className="outer-group">
-                    <h3>Marks</h3>
-                    {marks}
-                </div>
-                <div className="outer-group">
-                    <h3>Targets</h3>
-                    {targets}
-                </div>
-                <div className="flex-break"></div>
-                <div className="button-wrap">
-                    <div className="input-group">
-                        <button onClick={(e) => this.generate(e)}>Generate</button>
-                    </div>
-                </div>
-                <div className="flex-break"></div>
-                <div className="output-area">
-                    <textarea
-                        ref={this.textAreaRef}
-                        cols={40}
-                        rows={15}
-                        style={{ marginTop: "5px" }}>
-                    </textarea>
-                </div>
-            </>
+            <CheckboxWrap
+                key={`marks_${key}`}
+                id={`marks_${key}`}
+                checked={marks[key] === true}
+                onChange={(e) => setChanged(e, "marks", key)}>
+                {key}
+            </CheckboxWrap >
         )
-    }
+    });
+
+    const targetViews = Object.keys(targets).map(key => {
+        return (
+            <CheckboxWrap
+                key={`targets_${key}`}
+                id={`targets_${key}`}
+                checked={targets[key]}
+                onChange={(e) => setChanged(e, "targets", key)}>
+                {key}
+            </CheckboxWrap>
+        )
+    });
+
+    return (
+        <>
+            <div className="header">
+                <h1>Marking Macro Generator</h1>
+            </div>
+            <div className="outer-group">
+                <h3>Marks</h3>
+                {markViews}
+            </div>
+            <div className="outer-group">
+                <h3>Targets</h3>
+                {targetViews}
+            </div>
+            <div className="flex-break"></div>
+            <div className="button-wrap">
+                <div className="input-group">
+                    <button onClick={generate}>Generate</button>
+                </div>
+            </div>
+            <div className="flex-break"></div>
+            <div className="output-area">
+                <textarea
+                    readOnly
+                    value={output}
+                    cols={40}
+                    rows={15}
+                    style={{ marginTop: "5px" }}>
+                </textarea>
+            </div>
+        </>
+    )
 }
 
-export default Generator;
+export default gen;
