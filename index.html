@@ -2,87 +2,55 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marking Generator</title>
-    <script src="./vendor.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #212529;
-            text-align: left;
-        }
-
-        .outer-group {
-            border-right: 1px solid rgba(94, 94, 94, 0.433);
-        }
-
-        .output-area,
-        .outer-group,
-        .button-wrap {
-            float: left;
-            padding: 0 10px;
-            margin-right: 3px;
-        }
-
-        .content {
-            margin: 0 auto;
-        }
-
-        .input-group>input[type=checkbox] {
-            margin-right: 0.5em;
-        }
-
-
-        .flex-break,
-        .header {
-            clear: both;
-            display: flex;
-            margin: 1rem 0;
-        }
-
-        @media (min-width: 576px) {
-            body>.content {
-                max-width: 540px;
-            }
-        }
-
-        @media (min-width: 768px) {
-            body>.content {
-                max-width: 720px;
-            }
-
-            .flex-break {
-                display: none;
-            }
-        }
-
-        @media (min-width: 992px) {
-            body>.content {
-                max-width: 960px;
-            }
-        }
-
-        @media (min-width: 1200px) {
-            body>.content {
-                max-width: 1140px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Midknight.Dev</title>
+  <style>
+    html,
+    body {
+      padding: 0;
+      margin: 0;
+      background-color: #27262b;
+      font-family: system-ui, -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif, "Segoe UI Emoji";
+      font-size: inherit;
+      color: #ffffff;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="content" id="root"></div>
-    <script src="./main.js"></script>
+  <h4>
+    Thank you for visiting my site.
+    I have migrated it over to it's new <strong>PERMANENT</strong> location at: <a style="color: red"
+      href="https://midknight.dev/marking-macro-generator">https://midknight.dev/marking-macro-generator/a>.
+    </br>
+
+    This is still hosted via GitHub, but am moving it to a more suitable URL.
+    </br>
+    </br>
+
+    I will redirect you in 10 seconds... If it doesn't work, or you have javascript disabled, please click the link
+    above
+    or type it into your search bar.
+    </br>
+    </br>
+
+    Love you <3 </br>
+      Sir Midknight </h3>
+  </h4>
+
+  <script type="text/javascript">
+    (function () {
+      var redirect_to = "https://midknight.dev/marking-macro-generator";
+      var search_parameters = window.location.search;
+
+      console.log("Redirecting to: " + redirect_to + search_parameters);
+
+      setTimeout(function () {
+        window.location = redirect_to + search_parameters;
+      }, 10000)
+    })();
+  </script>
 </body>
 
 </html>
